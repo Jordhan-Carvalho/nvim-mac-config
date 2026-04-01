@@ -4,7 +4,7 @@ set -e
 FONT_CASK="font-jetbrains-mono-nerd-font"
 FONT_NAME="JetBrainsMono Nerd Font"
 FONT_POSTSCRIPT="JetBrainsMonoNFM-Regular"
-FONT_SIZE=16
+FONT_SIZE=14
 
 info()    { echo "[info]  $*"; }
 success() { echo "[ok]    $*"; }
