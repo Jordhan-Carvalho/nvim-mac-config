@@ -3,7 +3,7 @@ set -e
 
 FONT_CASK="font-jetbrains-mono-nerd-font"
 FONT_NAME="JetBrainsMono Nerd Font"
-FONT_POSTSCRIPT="JetBrainsMono-Regular-Nerd-Font-Complete"
+FONT_POSTSCRIPT="JetBrainsMonoNFM-Regular"
 FONT_SIZE=16
 
 info()    { echo "[info]  $*"; }
@@ -45,17 +45,17 @@ configure_iterm2() {
 
   for i in $(seq 0 $((count - 1))); do
     /usr/libexec/PlistBuddy \
-      -c "Set :\"New Bookmarks\":$i:\"Normal Font\" \"$FONT_NAME Mono $FONT_SIZE\"" \
+      -c "Set :\"New Bookmarks\":$i:\"Normal Font\" \"$FONT_POSTSCRIPT $FONT_SIZE\"" \
       "$plist" 2>/dev/null || \
     /usr/libexec/PlistBuddy \
-      -c "Add :\"New Bookmarks\":$i:\"Normal Font\" string \"$FONT_NAME Mono $FONT_SIZE\"" \
+      -c "Add :\"New Bookmarks\":$i:\"Normal Font\" string \"$FONT_POSTSCRIPT $FONT_SIZE\"" \
       "$plist" 2>/dev/null || true
 
     /usr/libexec/PlistBuddy \
-      -c "Set :\"New Bookmarks\":$i:\"Non Ascii Font\" \"$FONT_NAME Mono $FONT_SIZE\"" \
+      -c "Set :\"New Bookmarks\":$i:\"Non Ascii Font\" \"$FONT_POSTSCRIPT $FONT_SIZE\"" \
       "$plist" 2>/dev/null || \
     /usr/libexec/PlistBuddy \
-      -c "Add :\"New Bookmarks\":$i:\"Non Ascii Font\" string \"$FONT_NAME Mono $FONT_SIZE\"" \
+      -c "Add :\"New Bookmarks\":$i:\"Non Ascii Font\" string \"$FONT_POSTSCRIPT $FONT_SIZE\"" \
       "$plist" 2>/dev/null || true
   done
 
