@@ -40,7 +40,8 @@ configure_iterm2() {
   # Count how many profiles exist and update all of them
   local count
   count=$(/usr/libexec/PlistBuddy -c "Print :\"New Bookmarks\"" "$plist" 2>/dev/null \
-    | grep -c "^    Dict$" || echo 1)
+    | grep -c "^    Dict$" || true)
+  [ "${count:-0}" -eq 0 ] && count=1
 
   for i in $(seq 0 $((count - 1))); do
     /usr/libexec/PlistBuddy \
