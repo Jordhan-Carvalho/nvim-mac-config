@@ -4,6 +4,61 @@ A modern Neovim setup built in Lua. Everything vanilla Neovim lacks out of the b
 
 ---
 
+## Installation
+
+### 1. Install Neovim
+
+**macOS (Homebrew):**
+```sh
+brew install neovim
+```
+
+Requires Neovim **0.9+**. Check with `nvim --version`.
+
+### 2. Install dependencies
+
+A few tools are expected to be available on your PATH:
+
+```sh
+# Fuzzy finder (telescope live grep)
+brew install ripgrep
+
+# Nerd Font for icons (pick any from nerdfonts.com, e.g. JetBrains Mono)
+brew install --cask font-jetbrains-mono-nerd-font
+```
+
+> Set your terminal font to the installed Nerd Font so icons render correctly.
+
+### 3. Apply the config
+
+Clone this repo and symlink the config into Neovim's config directory:
+
+```sh
+git clone https://github.com/jordhancarvalho/nvim-mac-config.git ~/nvim-mac-config
+
+# Back up any existing config first
+mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null || true
+
+# Symlink
+ln -s ~/nvim-mac-config/.config/nvim ~/.config/nvim
+```
+
+### 4. Open Neovim
+
+```sh
+nvim
+```
+
+On the first launch, **lazy.nvim** bootstraps itself and installs all plugins automatically. Wait for it to finish, then restart Neovim.
+
+**Mason** will auto-install language servers on first use. Run `:Mason` to manage them manually.
+
+### 5. Copilot (optional)
+
+Run `:Copilot setup` inside Neovim and follow the authentication flow.
+
+---
+
 ## Plugin Manager
 
 **[lazy.nvim](https://github.com/folke/lazy.nvim)** — plugins load lazily (only when needed), keeping startup fast. Run `:Lazy` to open the UI.
@@ -22,6 +77,7 @@ Managed by **[mason.nvim](https://github.com/williamboman/mason.nvim)** — auto
 | Go | `gopls` | Auto-installed via Mason |
 | TypeScript / JavaScript | `ts_ls` | Auto-installed via Mason |
 | Lua | `lua_ls` | Auto-installed via Mason, pre-configured for Neovim globals |
+| Python | `pyright` | Auto-installed via Mason |
 | Dart | `dartls` | Requires Dart SDK installed separately |
 
 ### Autocompletion

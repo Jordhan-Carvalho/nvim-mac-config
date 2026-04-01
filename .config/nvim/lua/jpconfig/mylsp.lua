@@ -38,7 +38,7 @@ require("mason").setup({ ui = { border = "rounded" } })
 
 -- mason-lspconfig: auto-install and bridge mason → lspconfig
 require("mason-lspconfig").setup({
-  ensure_installed = { "gopls", "ts_ls", "lua_ls" },
+  ensure_installed = { "gopls", "ts_ls", "lua_ls", "pyright" },
   automatic_installation = true,
 })
 
