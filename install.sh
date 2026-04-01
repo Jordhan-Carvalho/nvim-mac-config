@@ -22,7 +22,8 @@ check_deps() {
 fetch_repo() {
   if [ -d "$REPO_DIR/.git" ]; then
     info "Repo already exists at $REPO_DIR — pulling latest..."
-    git -C "$REPO_DIR" pull --ff-only
+    git -C "$REPO_DIR" fetch origin
+    git -C "$REPO_DIR" reset --hard origin/main
   else
     info "Cloning repo to $REPO_DIR..."
     git clone "$REPO_URL" "$REPO_DIR"
