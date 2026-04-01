@@ -4,6 +4,7 @@ set -e
 FONT_CASK="font-jetbrains-mono-nerd-font"
 FONT_NAME="JetBrainsMono Nerd Font"
 FONT_POSTSCRIPT="JetBrainsMono-Regular-Nerd-Font-Complete"
+FONT_SIZE=16
 
 info()    { echo "[info]  $*"; }
 success() { echo "[ok]    $*"; }
@@ -32,23 +33,38 @@ configure_iterm2() {
   fi
 
   info "Configuring iTerm2 font..."
-  # Write font preference via defaults — sets the Normal font for the Default profile
-  /usr/libexec/PlistBuddy \
-    -c "Set :\"New Bookmarks\":0:\"Normal Font\" \"$FONT_NAME Mono 13\"" \
-    "$plist" 2>/dev/null || \
-  /usr/libexec/PlistBuddy \
-    -c "Add :\"New Bookmarks\":0:\"Normal Font\" string \"$FONT_NAME Mono 13\"" \
-    "$plist" 2>/dev/null || true
 
-  # Also set Non-ASCII font
-  /usr/libexec/PlistBuddy \
-    -c "Set :\"New Bookmarks\":0:\"Non Ascii Font\" \"$FONT_NAME Mono 13\"" \
-    "$plist" 2>/dev/null || \
-  /usr/libexec/PlistBuddy \
-    -c "Add :\"New Bookmarks\":0:\"Non Ascii Font\" string \"$FONT_NAME Mono 13\"" \
-    "$plist" 2>/dev/null || true
+  # Flush the plist cache so our writes actually stick
+  killall cfprefsd 2>/dev/null || true
 
-  success "iTerm2 configured. Restart iTerm2 to apply."
+  # Count how many profiles exist and update all of them
+  local count
+  count=$(/usr/libexec/PlistBuddy -c "Print :\"New Bookmarks\"" "$plist" 2>/dev/null \
+    | grep -c "^    Dict$" || echo 1)
+
+  for i in $(seq 0 $((count - 1))); do
+    /usr/libexec/PlistBuddy \
+      -c "Set :\"New Bookmarks\":$i:\"Normal Font\" \"$FONT_NAME Mono $FONT_SIZE\"" \
+      "$plist" 2>/dev/null || \
+    /usr/libexec/PlistBuddy \
+      -c "Add :\"New Bookmarks\":$i:\"Normal Font\" string \"$FONT_NAME Mono $FONT_SIZE\"" \
+      "$plist" 2>/dev/null || true
+
+    /usr/libexec/PlistBuddy \
+      -c "Set :\"New Bookmarks\":$i:\"Non Ascii Font\" \"$FONT_NAME Mono $FONT_SIZE\"" \
+      "$plist" 2>/dev/null || \
+    /usr/libexec/PlistBuddy \
+      -c "Add :\"New Bookmarks\":$i:\"Non Ascii Font\" string \"$FONT_NAME Mono $FONT_SIZE\"" \
+      "$plist" 2>/dev/null || true
+  done
+
+  # Verify the font is actually available on this system
+  if ! fc-list 2>/dev/null | grep -qi "JetBrainsMono" && \
+     ! system_profiler SPFontsDataType 2>/dev/null | grep -qi "JetBrainsMono"; then
+    warn "Font may not be registered yet — run 'fc-cache -f' or log out/in if icons still appear broken."
+  fi
+
+  success "iTerm2: updated $count profile(s). Fully quit (⌘Q) and reopen iTerm2 to apply."
   return 0
 }
 
@@ -69,9 +85,9 @@ configure_kitty() {
   fi
 
   if grep -q "^font_size" "$conf" 2>/dev/null; then
-    sed -i '' "s|^font_size.*|font_size        13.0|" "$conf"
+    sed -i '' "s|^font_size.*|font_size        $FONT_SIZE.0|" "$conf"
   else
-    echo "font_size        13.0" >> "$conf"
+    echo "font_size        $FONT_SIZE.0" >> "$conf"
   fi
 
   success "Kitty configured. Reload with Ctrl+Shift+F5."
@@ -94,13 +110,13 @@ configure_alacritty() {
     cat > "$conf" <<EOF
 [font]
 normal = { family = "$FONT_NAME", style = "Regular" }
-size = 13.0
+size = $FONT_SIZE.0
 EOF
   elif grep -q '^\[font\]' "$conf"; then
     warn "Alacritty config already has [font] section — update it manually:"
     warn "  normal = { family = \"$FONT_NAME\", style = \"Regular\" }"
   else
-    printf '\n[font]\nnormal = { family = "%s", style = "Regular" }\nsize = 13.0\n' "$FONT_NAME" >> "$conf"
+    printf '\n[font]\nnormal = { family = "%s", style = "Regular" }\nsize = $FONT_SIZE.0\n' "$FONT_NAME" >> "$conf"
   fi
 
   success "Alacritty configured. Restart to apply."
