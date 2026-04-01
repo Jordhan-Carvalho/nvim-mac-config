@@ -44,29 +44,26 @@ require("mason-lspconfig").setup({
 
 local lspconfig = require("lspconfig")
 
--- Default handler: applies to all mason-managed servers
-require("mason-lspconfig").setup_handlers({
-  function(server_name)
-    lspconfig[server_name].setup({
-      on_attach = on_attach,
-      capabilities = capabilities,
-    })
-  end,
+-- Default setup for all mason-managed servers
+local servers = { "gopls", "ts_ls", "pyright" }
+for _, server_name in ipairs(servers) do
+  lspconfig[server_name].setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+  })
+end
 
-  -- lua_ls needs extra config to recognise the vim global
-  ["lua_ls"] = function()
-    lspconfig.lua_ls.setup({
-      on_attach = on_attach,
-      capabilities = capabilities,
-      settings = {
-        Lua = {
-          diagnostics = { globals = { "vim" } },
-          workspace = { checkThirdParty = false },
-          telemetry = { enable = false },
-        },
-      },
-    })
-  end,
+-- lua_ls needs extra config to recognise the vim global
+lspconfig.lua_ls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      diagnostics = { globals = { "vim" } },
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+    },
+  },
 })
 
 -- dartls is bundled with the Dart SDK, not managed by mason

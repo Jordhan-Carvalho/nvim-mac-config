@@ -31,17 +31,20 @@ brew install --cask font-jetbrains-mono-nerd-font
 
 ### 3. Apply the config
 
-Clone this repo and symlink the config into Neovim's config directory:
+Run the installer — it handles cloning, backing up any existing config, and symlinking:
 
 ```sh
-git clone https://github.com/jordhancarvalho/nvim-mac-config.git ~/nvim-mac-config
-
-# Back up any existing config first
-mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null || true
-
-# Symlink
-ln -s ~/nvim-mac-config/.config/nvim ~/.config/nvim
+curl -fsSL https://raw.githubusercontent.com/Jordhan-Carvalho/nvim-mac-config/main/install.sh | bash
 ```
+
+Or clone first and run locally:
+
+```sh
+git clone https://github.com/Jordhan-Carvalho/nvim-mac-config.git ~/nvim-mac-config
+bash ~/nvim-mac-config/install.sh
+```
+
+If a config already exists at `~/.config/nvim`, it is backed up to `~/.config/nvim.bak.<timestamp>` before the symlink is created. Re-running the script on an existing installation pulls the latest changes instead of re-cloning.
 
 ### 4. Open Neovim
 
