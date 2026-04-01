@@ -57,6 +57,7 @@ vim.keymap.set("n", "<leader>f", function()
 end, opts)
 vim.keymap.set("n", "<leader>s", "<cmd>Telescope live_grep<cr>", opts)
 vim.keymap.set("n", "<leader>[", "<cmd>Telescope diagnostics<cr>", opts)
+vim.keymap.set("n", "<leader>tc", "<cmd>Telescope colorscheme enable_preview=true<cr>", opts)
 
 -- File explorer
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>", opts)

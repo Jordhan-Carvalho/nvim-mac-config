@@ -17,17 +17,24 @@ Requires Neovim **0.9+**. Check with `nvim --version`.
 
 ### 2. Install dependencies
 
-A few tools are expected to be available on your PATH:
-
 ```sh
 # Fuzzy finder (telescope live grep)
 brew install ripgrep
-
-# Nerd Font for icons (pick any from nerdfonts.com, e.g. JetBrains Mono)
-brew install --cask font-jetbrains-mono-nerd-font
 ```
 
-> Set your terminal font to the installed Nerd Font so icons render correctly.
+Install JetBrainsMono Nerd Font and auto-configure your terminal (iTerm2, Kitty, or Alacritty):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/Jordhan-Carvalho/nvim-mac-config/main/install-font.sh | bash
+```
+
+Or run locally:
+
+```sh
+bash ~/nvim-mac-config/install-font.sh
+```
+
+> If your terminal isn't detected, set the font manually to **JetBrainsMono Nerd Font** in your terminal settings.
 
 ### 3. Apply the config
 
@@ -125,7 +132,9 @@ Managed by **[mason.nvim](https://github.com/williamboman/mason.nvim)** — auto
 - **[bufferline.nvim](https://github.com/akinsho/bufferline.nvim)** — buffer tabs at the top with file icons and close buttons.
 
 ### Colorscheme
-**[nightfly](https://github.com/bluz71/vim-nightfly-colors)** as default. **[tokyonight](https://github.com/folke/tokyonight.nvim)** also installed. Change in `lua/jpconfig/colorscheme.lua`.
+**[nightfly](https://github.com/bluz71/vim-nightfly-colors)** as default. **[tokyonight](https://github.com/folke/tokyonight.nvim)** also installed.
+
+Use `<leader>tc` to open a live theme picker (Telescope with preview). To persist a theme, update `lua/jpconfig/colorscheme.lua` with the chosen name.
 
 ### Misc
 - **vim-autoread** — automatically reloads buffers when files change on disk (e.g. after a `git checkout`).
@@ -175,6 +184,7 @@ Managed by **[mason.nvim](https://github.com/williamboman/mason.nvim)** — auto
 | `<leader>f` | Normal | Find files (includes dotfiles, excludes `.git`) |
 | `<leader>s` | Normal | Live grep (search text across project) |
 | `<leader>[` | Normal | Show all LSP diagnostics |
+| `<leader>tc` | Normal | Browse and preview colorschemes |
 
 **Inside Telescope:**
 
