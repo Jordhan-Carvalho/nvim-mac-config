@@ -40,6 +40,16 @@ backup_existing() {
   fi
 }
 
+# ── remove legacy packer plugins ───────────────────────────────────────────────
+remove_packer() {
+  local packer_dir="$HOME/.local/share/nvim/site/pack/packer"
+  if [ -d "$packer_dir" ]; then
+    warn "Found old packer plugin directory — removing to avoid conflicts with lazy.nvim..."
+    rm -rf "$packer_dir"
+    success "Removed $packer_dir"
+  fi
+}
+
 # ── symlink ────────────────────────────────────────────────────────────────────
 link_config() {
   mkdir -p "$HOME/.config"
@@ -55,6 +65,7 @@ main() {
   check_deps
   fetch_repo
   backup_existing
+  remove_packer
   link_config
 
   echo ""
