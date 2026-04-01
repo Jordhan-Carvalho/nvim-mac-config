@@ -42,21 +42,14 @@ require("mason-lspconfig").setup({
   automatic_installation = true,
 })
 
-local lspconfig = require("lspconfig")
-
--- Default setup for all mason-managed servers
-local servers = { "gopls", "ts_ls", "pyright" }
-for _, server_name in ipairs(servers) do
-  lspconfig[server_name].setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-  })
-end
-
--- lua_ls needs extra config to recognise the vim global
-lspconfig.lua_ls.setup({
+-- Default capabilities/on_attach for all servers
+vim.lsp.config("*", {
   on_attach = on_attach,
   capabilities = capabilities,
+})
+
+-- lua_ls needs extra config to recognise the vim global
+vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
       diagnostics = { globals = { "vim" } },
@@ -67,7 +60,6 @@ lspconfig.lua_ls.setup({
 })
 
 -- dartls is bundled with the Dart SDK, not managed by mason
-lspconfig.dartls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
+vim.lsp.config("dartls", {})
+
+vim.lsp.enable({ "gopls", "ts_ls", "pyright", "lua_ls", "dartls" })
