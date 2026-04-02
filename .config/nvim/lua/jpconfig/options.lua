@@ -54,3 +54,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.g.copilot_enabled = true
+
+-- Disable unused providers to suppress checkhealth warnings
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
